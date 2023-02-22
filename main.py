@@ -3,7 +3,7 @@ from helper import *
 
 
 if __name__ == '__main__':
-    rsa = RSA(bits = 16)
+    rsa = RSA(bits = 128)
     og = 'hello world'
     enc_og = rsa.encrypt(og)
     dec_og = rsa.decrypt(enc_og)
