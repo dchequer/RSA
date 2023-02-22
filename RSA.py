@@ -21,7 +21,7 @@ class RSA:
         self.__p: int = p
         self.__q: int = q
         
-        self.n: int = p * q                 # Modulus
+        self.n: int = p * q                 # Modulus | part of key
         self.__phi: int = (p - 1) * (q - 1) # Euler's totient function
         
         self.e: int = 0                     # Public key
@@ -30,9 +30,12 @@ class RSA:
         self.e, self.__d = self.generate_keys()
     
     def generate_keys(self) -> Tuple[int, int]:
+        '''
+        Find appropiate e and d (public and private keys)
+        '''
         e: int = self.e
         d: int = self.__d
-        for i in range(2, self.__phi):      # Find e
+        for i in range(2, self.__phi):      # Find e | 1 < e < phi(n)
             if gcd(i, self.__phi) == 1:
                 e = i
                 break
