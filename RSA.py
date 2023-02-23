@@ -1,51 +1,52 @@
-from math import gcd
+from math import gcd    
 from typing import List, Tuple
 from helper import *
+from random import choice
 
 class RSA:
+    '''
+    
+    
+    
+    '''
     BIG_NUMBER: int = 100000000
+    E_VALUES: List[int] = [3, 5, 17, 257, 65537]
 
-    def __init__(self, bits: int = 1024, *args, **kwargs) -> None:
+    def __init__(self,bits: int = 1024, *args, **kwargs) -> None:
         '''
         :param bits: Number of bits to use.
         :param args: Arguments to use as p and q.
             :param p: Prime number.
             :param q: Prime number.
         '''
-        def parse_kwargs(p: int = 0, q: int = 0) -> Tuple[int, int]:
+        def parse_kwargs(e: int = 0, p: int = 0, q: int = 0) -> Tuple[int, int, int]:
+            if not e:
+                e = choice(RSA.E_VALUES)
             if not (p and q):
-                p, q = generate_primes(bits)
-            return p, q
+                p, q = generate_primes(e=e, bits=bits)
+            return e, p, q
         
-        p, q = parse_kwargs(**kwargs) 
+        e, p, q = parse_kwargs(**kwargs)    # int
         self.__p: int = p
         self.__q: int = q
         
         self.n: int = p * q                 # Modulus | part of key
         self.__phi: int = (p - 1) * (q - 1) # Euler's totient function
         
-        self.e: int = 0                     # Public key
-        self.__d: int = 0                   # Private key
-
-        self.e, self.__d = self.generate_keys()
+        self.e: int = e                     # Public key
+        self.__d: int = self.private_key  # Private key
     
-    def generate_keys(self) -> Tuple[int, int]:
+
+    @property
+    def __private_key(self) -> int:
+        return self.__d
+    
+    @__private_key.getter
+    def private_key(self) -> int:
         '''
-        Find appropiate e and d (public and private keys)
+        Find appropiate d for current e.
         '''
-        e: int = self.e
-        d: int = self.__d
-        for i in range(2, self.__phi):      # Find e | 1 < e < phi(n)
-            if gcd(i, self.__phi) == 1:
-                e = i
-                break
-        for i in range(1, RSA.BIG_NUMBER):  # Find d
-            x = 1 + i * self.__phi
-            if x % e == 0:                  # type: ignore
-                d = int(x / e)
-                break
-        
-        return e, d                         # type: ignore
+        return invMod(self.__phi, self.e)      
     
     def encrypt(self, message: str) -> List[int]:
         '''
