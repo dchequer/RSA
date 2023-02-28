@@ -30,7 +30,7 @@ class RSA:
         self.__p: int = p
         self.__q: int = q
         
-        self.n: int = p * q                 # Modulus | part of key
+        self.n: int = p * q                 # Modulus | part of key | max length of key
         self.__phi: int = (p - 1) * (q - 1) # Euler's totient function
         
         self.e: int = e                     # Public key
@@ -46,7 +46,7 @@ class RSA:
         '''
         Find appropiate d for current e.
         '''
-        return invMod(self.__phi, self.e)      
+        return invMod(n=self.__phi, m=self.n)      
     
     def encrypt(self, message: str) -> List[int]:
         '''
@@ -69,6 +69,8 @@ class RSA:
 
         m: List[str] = []
         for char in secret:
+            temp = pow(base=char, exp=self.__d, mod=self.n)
+            print(f'{char} ^ {self.__d} mod {self.n} = {temp}')
             m.append(chr(pow(base=char, exp=self.__d, mod=self.n)))
         return join(m)
     
