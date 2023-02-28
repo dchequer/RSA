@@ -11,13 +11,14 @@ class RSA:
     
     Examples
     --------
+    ```
     from RSA import RSA
 
-    rsa1 = RSA(bits = 16)                                                   # generate e, p, q    
-    rsa2 = RSA(bits = 64, e = 5, p = 38839, q = 14563, d = 412737137)       # use given values
-    rsa3 = RSA(bits = 32, e = 7, p = 38839, q = 14563)                      # generate d 
-    rsa4 = RSA(bits = 128, e = 65537)                                       # generate p, q, d
-
+    rsa1 = RSA(bits = 16)                                                   # generate e, p, q.  
+    rsa2 = RSA(bits = 64, e = 5, p = 38839, q = 14563, d = 412737137)       # use given values.  
+    rsa3 = RSA(bits = 32, e = 7, p = 38839, q = 14563)                      # generate d.  
+    rsa4 = RSA(bits = 128, e = 65537)                                       # generate p, q, d.  
+    ```
 
     
     '''
