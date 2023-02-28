@@ -4,8 +4,8 @@ from math import gcd
 from time import time
 
 def timer_func(func):
-    # This function shows the execution time of 
-    # the function object passed
+    '''This function shows the execution time of 
+    the function object passed'''
     def wrap_func(*args, **kwargs):
         t1 = time()
         result = func(*args, **kwargs)
@@ -40,7 +40,7 @@ def join(*args, **kwargs) -> str:
     return output
 
 #@timer_func
-def isPrime(n: int, *args, **kwargs) -> bool:
+def isPrime(n: int, **kwargs) -> bool:
     '''
     Check if a number is prime.
     :param n: Number to check.
@@ -59,13 +59,13 @@ def isPrime(n: int, *args, **kwargs) -> bool:
     
     if (kwargs := parse_kwargs(**kwargs)) != 0:     # find if co-prime
         return gcd(n, kwargs) == 1
-    else:                                           # find if prime                
-        i = 5                                       # start at 5
-        while i * i <= n:
-            if n % i == 0 or n % (i + 2) == 0: 
-                return False                        # a common factor has been found
-            i += 6
-        return True                                 # no common factors
+                 
+    i = 5                                           # start at 5
+    while i * i <= n:
+        if n % i == 0 or n % (i + 2) == 0: 
+            return False                            # a common factor has been found
+        i += 6
+    return True                                     # no common factors
 
 def newPrime(bits: int) -> int:
     '''
@@ -85,13 +85,13 @@ def generate_primes(e: int, bits: int = 1024) -> Tuple[int, int]:
     p: int = 0
     q: int = 0
     while not isPrime(n=p, k=e):
-        print('finding p')
+        #print('finding p')
         p = newPrime(bits=bits//2)
     while not isPrime(q, k=e):
-        print('finding q')
+        #print('finding q')
         q = newPrime(bits=bits - bits//2)
-    print('done!')
-    print(p, q)
+    #print('done!')
+    #print(p, q)
     return p, q
 
 def invMod(n: int, m: int) -> int:
@@ -104,6 +104,7 @@ def invMod(n: int, m: int) -> int:
         if (n * i) % m == 1:
             return i
     return 1
+    
 
 if __name__ == '__main__':
     #print(generate_primes(e=257, bits=128))
